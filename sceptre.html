@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caya - Store</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #000, #0a0f1e);
+      color: #ffffff;
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* 3D Titel "Caya" */
+    .title {
+      position: absolute;
+      top: 20px;
+      font-size: 4rem;
+      font-weight: bold;
+      color: #00bfff; /* Hellblau */
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      text-shadow: 
+        0px 1px 0px #004466, 
+        0px 2px 0px #004466, 
+        0px 3px 0px #004466, 
+        0px 4px 0px #004466, 
+        0px 5px 0px #004466, 
+        0px 6px 3px rgba(0, 0, 0, 0.4),
+        0px 6px 1px rgba(0, 0, 0, 0.2),
+        0px 0px 15px rgba(0, 191, 255, 0.6); /* Glow-Effekt */
+      animation: title-glow 3s infinite alternate;
+    }
+
+    /* Animation für den Glow-Effekt */
+    @keyframes title-glow {
+      from {
+        text-shadow: 
+          0px 1px 0px #004466, 
+          0px 2px 0px #004466, 
+          0px 3px 0px #004466, 
+          0px 4px 0px #004466, 
+          0px 5px 0px #004466, 
+          0px 6px 3px rgba(0, 0, 0, 0.4),
+          0px 6px 1px rgba(0, 0, 0, 0.2),
+          0px 0px 15px rgba(0, 191, 255, 0.6);
+      }
+      to {
+        text-shadow: 
+          0px 1px 0px #004466, 
+          0px 2px 0px #004466, 
+          0px 3px 0px #004466, 
+          0px 4px 0px #004466, 
+          0px 5px 0px #004466, 
+          0px 10px 6px rgba(0, 0, 0, 0.4),
+          0px 10px 2px rgba(0, 0, 0, 0.2),
+          0px 0px 25px rgba(0, 191, 255, 0.9);
+      }
+    }
+
+    .auth-box {
+      text-align: center;
+      background: rgba(10, 15, 30, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6);
+      transition: transform 0.3s ease;
+    }
+
+    .auth-box:hover {
+      transform: translateY(-5px);
+    }
+
+    input[type="text"] {
+      width: 250px;
+      padding: 15px;
+      margin: 15px 0;
+      border: none;
+      border-radius: 10px;
+      background: #1a1f36;
+      color: #00bfff;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      transition: box-shadow 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      box-shadow: 0 4px 15px rgba(0, 191, 255, 0.8);
+    }
+
+    button {
+      padding: 12px 25px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #00bfff;
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    button:hover {
+      background: #008fcc;
+      transform: translateY(-2px);
+    }
+
+    .download-box {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .download-box a {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      background: #00bfff;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .download-box a:hover {
+      background: #008fcc;
+      transform: translateY(-2px);
+    }
+
+    .error {
+      color: #ff4d4d;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="title"></div>
+
+  <div class="auth-box">
+    <h2>Sceptre - Loader</h2>
+    <p>Gib deinen Schlüssel ein, um den Download freizuschalten:</p>
+    <input type="text" id="key-input" placeholder="Schlüssel eingeben">
+    <button onclick="checkKey()">Absenden</button>
+    <div class="error" id="error-message"></div>
+  </div>
+
+  <div class="download-box" id="download-box">
+    <h3>Key working!</h3>
+    <a href="https://cdn.discordapp.com/attachments/1310182326222979113/1311290212264968202/Loader_V1.2.zip?ex=675823ad&is=6756d22d&hm=1493eb03cd383642a1c91aed3e5c2553ba4bdbf38fb532372ba8b21735d0b88a&" download>Herunterladen</a>
+  </div>
+
+  <script>
+    const validKey = "sceptre";
+
+    function checkKey() {
+      const userInput = document.getElementById("key-input").value;
+      const errorMessage = document.getElementById("error-message");
+      const downloadBox = document.getElementById("download-box");
+
+      if (userInput === validKey) {
+        errorMessage.textContent = ""; 
+        downloadBox.style.display = "block"; 
+        document.querySelector(".auth-box").style.display = "none"; 
+      } else {
+        errorMessage.textContent = "Ungültiger Schlüssel. Bitte erneut versuchen.";
+      }
+    }
+  </script>
+</body>
+</html>
